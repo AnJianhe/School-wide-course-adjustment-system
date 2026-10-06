@@ -233,3 +233,37 @@ header {
     cursor: pointer;
     margin-top: 15px;
 }
+/* 账号配置与管理页面 */
+.account-nav, .row-form, .admin-form { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:16px 0; }
+.account-nav form { display:inline; }
+.account-nav a { color:#216ba5; }
+.admin-panel { background:white; padding:22px; margin:22px 0; border-radius:8px; }
+.admin-panel h2 { margin:12px 0; }
+.admin-form label { display:flex; flex-direction:column; gap:5px; }
+input, select, button { font:inherit; }
+.admin-panel input, .admin-panel select { padding:8px; border:1px solid #ccc; border-radius:4px; max-width:240px; }
+button { cursor:pointer; padding:6px 12px; }
+.checkbox { display:flex !important; flex-direction:row !important; align-items:center; gap:6px; }
+.message { background:#e8f4fd; padding:12px; margin:12px 0; border-radius:4px; }
+.message.error, .error { background:#fadbd8; color:#a51c12; }
+.table-scroll { overflow-x:auto; }
+.request-table { width:100%; border-collapse:collapse; }
+.request-table th, .request-table td { padding:10px; border-bottom:1px solid #ddd; text-align:left; }
+.status-approved { color:#127b36; }
+.status-rejected { color:#b52a22; }
+.status-pending { color:#8a5900; }
+@media (max-width:600px) { header { flex-wrap:wrap; } .login-container { margin:24px 12px; } .tab-content { padding:8px; overflow-x:auto; } }
+
+.language-selector { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.language-selector select { font:inherit; max-width:220px; padding:6px; }
+html[dir=rtl] .course-table th, html[dir=rtl] .course-table td,
+html[dir=rtl] .request-table th, html[dir=rtl] .request-table td { text-align:right; }
+html[dir=rtl] .adjustment-notice { border-left:0; border-right:4px solid #ffc107; }
+html[dir=rtl] .close-btn { right:auto; left:20px; }
+html[dir=rtl] .tab-btn:not(:last-child) { border-right:0; border-left:1px solid #ddd; }
+
+@media (max-width:600px) {
+    .class-title { font-size:1.6rem !important; }
+    .schedule-table { table-layout:fixed; overflow-wrap:anywhere; }
+    .schedule-table th, .schedule-table td { padding:8px !important; font-size:0.95rem !important; }
+}

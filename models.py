@@ -1,14 +1,25 @@
 from extensions import db
 import time
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     role = db.Column(db.String(10), nullable=False)  # 'teacher' or 'screen'
+    password_hash = db.Column(db.String(256), nullable=False, default='')
+    enabled = db.Column(db.Boolean, nullable=False, default=True)
+    must_change_password = db.Column(db.Boolean, nullable=False, default=True)
+    session_version = db.Column(db.Integer, nullable=False, default=0)
     courses = db.relationship('Course', backref='teacher', lazy=True)
     
     def __repr__(self):
         return f'<User {self.username} ({self.role})>'
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return bool(self.password_hash) and check_password_hash(self.password_hash, password)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +40,7 @@ class AdjustmentRequest(db.Model):
     status = db.Column(db.String(20), default='pending')  # 'pending', 'approved', 'rejected'
     created_at = db.Column(db.Float, default=time.time)
     approved_at = db.Column(db.Float)
+    reason = db.Column(db.String(500), nullable=False, default='')
     
     # 关联关系
     from_teacher = db.relationship('User', foreign_keys=[from_teacher_id])
@@ -42,8 +54,18 @@ class AdjustmentRequest(db.Model):
             'to_teacher': self.to_teacher_id,
             'status': self.status,
             'created_at': self.created_at,
-            'approved_at': self.approved_at
+            'approved_at': self.approved_at,
+            'reason': self.reason,
+            'class_name': self.course.class_name,
+            'subject': self.course.subject,
+            'time_slot': self.course.time_slot
         }
     
     def __repr__(self):
         return f'<AdjustmentRequest {self.id} {self.status}>'
+
+
+class LoginAttempt(db.Model):
+    key = db.Column(db.String(64), primary_key=True)
+    failures = db.Column(db.Integer, nullable=False, default=0)
+    started_at = db.Column(db.Float, nullable=False, default=time.time)

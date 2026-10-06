@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
+<html lang="{{ locale }}" dir="{{ 'rtl' if locale == 'ar' else 'ltr' }}">
+<head><meta charset="UTF-8">
+    {% include 'locale_data.html' %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ class_id }}班 - 课表大屏</title>
+    <title>{{ class_id }} {{ _('班 - 课表大屏') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         .screen-container {
@@ -62,22 +63,23 @@
 </head>
 <body>
     <div class="screen-container">
+        {% include 'navigation.html' %}
         <div class="class-header">
-            <h1 class="class-title">{{ class_id }}班 实时课表</h1>
-            <div class="update-time">最后更新: <span id="lastUpdate"></span></div>
+            <h1 class="class-title"><bdi>{{ class_id }}</bdi> {{ _('班 实时课表') }}</h1>
+            <div class="update-time">{{ _('最后更新:') }} <span id="lastUpdate"></span></div>
         </div>
 
         <table class="schedule-table">
             <thead>
                 <tr>
-                    <th>时间段</th>
-                    <th>课程</th>
-                    <th>教师</th>
-                    <th>状态</th>
+                    <th>{{ _('时间段') }}</th>
+                    <th>{{ _('课程') }}</th>
+                    <th>{{ _('教师') }}</th>
+                    <th>{{ _('状态') }}</th>
                 </tr>
             </thead>
             <tbody id="scheduleBody">
-                <tr><td colspan="4" class="loading">加载中...</td></tr>
+                <tr><td colspan="4" class="loading">{{ _('加载中...') }}</td></tr>
             </tbody>
         </table>
 

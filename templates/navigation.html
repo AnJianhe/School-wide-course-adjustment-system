@@ -1,0 +1,14 @@
+{% include 'language.html' %}
+<nav class="account-nav">
+    <span>{{ _('当前账号：') }}{{ current_user.username }}</span>
+    {% if current_user.role == 'admin' %}<a href="{{ url_for('admin') }}">{{ _('系统管理') }}</a>{% endif %}
+    {% if current_user.role == 'teacher' %}<a href="{{ url_for('teacher_dashboard') }}">{{ _('我的课程') }}</a>{% endif %}
+    <a href="{{ url_for('password') }}">{{ _('修改密码') }}</a>
+    <form method="post" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button type="submit">{{ _('退出登录') }}</button>
+    </form>
+</nav>
+{% for category, message in get_flashed_messages(with_categories=true) %}
+<p role="status" class="message {{ category }}">{{ message }}</p>
+{% endfor %}

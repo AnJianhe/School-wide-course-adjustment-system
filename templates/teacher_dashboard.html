@@ -1,59 +1,62 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
+<html lang="{{ locale }}" dir="{{ 'rtl' if locale == 'ar' else 'ltr' }}">
+<head><meta charset="UTF-8">
+    {% include 'locale_data.html' %}
+
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>教师仪表盘 - 调课系统</title>
+    <title>{{ _('教师仪表盘 - 调课系统') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="dashboard-container">
         <header>
-            <h1>教师调课系统</h1>
-            <div class="user-info">当前用户: {{ current_user.username }}</div>
+            <h1>{{ _('教师调课系统') }}</h1>
+            <div class="user-info">{{ _('当前用户:') }} {{ current_user.username }}</div>
         </header>
+        {% include 'navigation.html' %}
 
         <section class="my-courses">
-            <h2>我的课程</h2>
+            <h2>{{ _('我的课程') }}</h2>
             <table class="course-table">
                 <thead>
                     <tr>
-                        <th>班级</th>
-                        <th>时间段</th>
-                        <th>课程</th>
-                        <th>操作</th>
+                        <th>{{ _('班级') }}</th>
+                        <th>{{ _('时间段') }}</th>
+                        <th>{{ _('课程') }}</th>
+                        <th>{{ _('操作') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for course in courses %}
                     <tr>
                         <td>{{ course.class_name }}</td>
-                        <td>{{ course.time_slot }}</td>
-                        <td>{{ course.subject }}</td>
+                        <td>{{ _(course.time_slot) }}</td>
+                        <td>{{ _(course.subject) }}</td>
                         <td>
-                            <button class="btn-adjust" onclick="openAdjustModal({{ course.id }})")>申请调课</button>
+                            <button class="btn-adjust" onclick="openAdjustModal({{ course.id }})">{{ _('申请调课') }}</button>
                         </td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="4" class="no-data">暂无课程数据</td></tr>
+                    <tr><td colspan="4" class="no-data">{{ _('暂无课程数据') }}</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
         </section>
 
         <section class="adjustment-section">
-            <h2>调课申请管理</h2>
+            <h2>{{ _('调课申请管理') }}</h2>
             <div class="tabs">
-                <button class="tab-btn active" data-tab="received">收到的申请</button>
-                <button class="tab-btn" data-tab="sent">已发送的申请</button>
+                <button class="tab-btn active" data-tab="received">{{ _('收到的申请') }}</button>
+                <button class="tab-btn" data-tab="sent">{{ _('已发送的申请') }}</button>
             </div>
             <div class="tab-content" id="received-content">
                 <!-- 收到的申请内容将通过JS加载 -->
-                <div class="loading">加载中...</div>
+                <div class="loading">{{ _('加载中...') }}</div>
             </div>
             <div class="tab-content" id="sent-content" style="display: none;">
                 <!-- 已发送的申请内容将通过JS加载 -->
-                <div class="loading">加载中...</div>
+                <div class="loading">{{ _('加载中...') }}</div>
             </div>
         </section>
     </div>
@@ -62,23 +65,23 @@
     <div class="modal" id="adjustModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeAdjustModal()">&times;</span>
-            <h2>发起调课申请</h2>
+            <h2>{{ _('发起调课申请') }}</h2>
             <form id="adjustForm">
                 <input type="hidden" id="courseId">
                 <div class="form-group">
-                    <label for="targetTeacher">选择目标教师</label>
+                    <label for="targetTeacher">{{ _('选择目标教师') }}</label>
                     <select id="targetTeacher" required>
-                        <option value="">-- 选择教师 --</option>
+                        <option value="">{{ _('-- 选择教师 --') }}</option>
                         {% for teacher in other_teachers %}
                         <option value="{{ teacher.username }}">{{ teacher.username }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="reason">调课原因 (可选)</label>
-                    <textarea id="reason" rows="3"></textarea>
+                    <label for="reason">{{ _('调课原因 (可选)') }}</label>
+                    <textarea id="reason" rows="3" maxlength="500"></textarea>
                 </div>
-                <button type="submit" class="btn-submit">提交申请</button>
+                <button type="submit" class="btn-submit">{{ _('提交申请') }}</button>
             </form>
         </div>
     </div>
