@@ -316,7 +316,7 @@ def create_app(test_config=None):
                                        to_teacher_id=target_id, reason=reason.strip(), status='pending')
         db.session.add(adjustment)
         db.session.commit()
-        return jsonify(status='success', message='调课申请已提交', request_id=adjustment.id)
+        return jsonify(status='success', message=_('调课申请已提交'), request_id=adjustment.id)
 
     @app.get('/api/teacher/adjustments')
     @require_role('teacher')
@@ -347,7 +347,7 @@ def create_app(test_config=None):
         else:
             adjustment.status, adjustment.approved_at = 'rejected', None
         db.session.commit()
-        return jsonify(status='success', message='申请已批准' if adjustment.status == 'approved' else '申请已拒绝')
+        return jsonify(status='success', message=_('申请已批准' if adjustment.status == 'approved' else '申请已拒绝'))
 
     @app.get('/admin')
     @require_role('admin')

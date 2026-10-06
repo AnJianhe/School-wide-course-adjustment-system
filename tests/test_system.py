@@ -248,6 +248,16 @@ class SystemTest(unittest.TestCase):
                 if path == '/admin':
                     self.assertIn('value="上午1"'.encode(), response.data)
 
+    def test_localized_success_messages(self):
+        one, two = self.login('t1'), self.login('t2')
+        for client in [one, two]:
+            self.post(client, '/language', data={'language':'en'})
+        response = self.post(one, '/api/adjustment/request', json={'course_id':1,'target_teacher_id':'t2'})
+        self.assertEqual(response.json['message'], CATALOGS['en']['调课申请已提交'])
+        rid = response.json['request_id']
+        response = self.post(two, f'/api/adjustment/{rid}/handle', json={'action':'approve'})
+        self.assertEqual(response.json['message'], CATALOGS['en']['申请已批准'])
+
 
 if __name__ == '__main__':
     unittest.main()
