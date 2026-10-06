@@ -1,0 +1,8 @@
+<form class="language-selector" method="post" action="{{ url_for('set_language') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <label for="language">{{ _('语言') }}</label>
+    <select id="language" name="language" onchange="this.form.submit()">
+    {% for code, name in languages.items() %}<option value="{{ code }}" {{ 'selected' if code == locale }}>{{ name }}</option>{% endfor %}
+    </select><noscript><button type="submit">{{ _('保存') }}</button></noscript>
+</form>

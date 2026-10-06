@@ -1,24 +1,32 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
+<html lang="{{ locale }}" dir="{{ 'rtl' if locale == 'ar' else 'ltr' }}">
+<head><meta charset="UTF-8">
+    {% include 'locale_data.html' %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全校调课系统 - 登录</title>
+    <title>{{ _('全校调课系统 - 登录') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="login-container">
-        <h1>全校调课系统</h1>
+        <h1>{{ _('全校调课系统') }}</h1>
+        {% include 'language.html' %}
         <form method="POST" action="/">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div class="form-group">
-                <label for="user_id">用户ID</label>
-                <input type="text" id="user_id" name="user_id" required placeholder="教师账号(qfcXX)或班级账号(XXX)">
+                <label for="user_id">{{ _('用户ID') }}</label>
+                <input type="text" id="user_id" name="user_id" maxlength="20" autocomplete="username" required placeholder="{{ _('管理员、教师或班级账号') }}">
+            </div>
+            <div class="form-group">
+                <label for="password">{{ _('密码') }}</label>
+                <input type="password" id="password" name="password" maxlength="128" autocomplete="current-password" required>
             </div>
             {% if error %}
-            <div class="error-message">{{ error }}</div>
+            <div class="error-message">{{ _(error) }}</div>
             {% endif %}
-            <button type="submit" class="btn-login">登录</button>
+            <button type="submit" class="btn-login">{{ _('登录') }}</button>
         </form>
+        {% if not configured %}<p class="message">{{ _('系统尚未创建管理员，请按 README 的初始化步骤创建。') }}</p>{% endif %}
     </div>
 </body>
 </html>
